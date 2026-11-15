@@ -199,6 +199,9 @@ body.ingame:has(.povb){padding-top:50px}
 .tp.t3{border-color:#eab308}
 
 .zones.zmany{display:flex;flex-wrap:wrap;justify-content:center}.zones.zmany .zone{flex:1 1 42%;min-width:180px}.zones.zmany .vs{display:none}
+
+.av{position:relative}.av .hat{position:absolute;top:-22px;left:50%;transform:translateX(-50%) rotate(-8deg);font-size:34px;z-index:2;filter:drop-shadow(0 2px 2px #0006)}
+.chtm{position:fixed;inset-inline-start:12px;bottom:14px;z-index:32;background:#111827e6;color:#fff;border:2px solid #f59e0b;border-radius:14px;padding:8px 14px;font-weight:700;box-shadow:0 6px 20px #0008;font-variant-numeric:tabular-nums}.chtm b{display:block;font-family:'Secular One',Rubik,sans-serif;font-size:22px;color:#fbbf24}
 </style></head><body><div id="app"></div>
 
 <script>
@@ -210,7 +213,7 @@ MR MIME|3|מוריד 15 לשני היריבים, אבל לשניהם יש 2 תו
 FERN|3|ל-3 התורות הבאים יורדים 5 חיים לשני היריבים בכל תור
 CLOWNPIERCE|3|מוריד 30 לאחד היריבים
 SENSEI WUU|3|מכפיל את הדמג' של החבר שלך בתור הבא
-GIGA DRILL BREAK|5|מוריד 65 למישהו
+GIGA DRILL BREAK|5|מוריד 65 למישהו. בנוסף בוחרים כמה קלפים שרוצים מהיד שלך – כל 3★ עם 40% להשתדרג ל-4★, וכל 4★ עם 20% להשתדרג ל-5★
 TODO|5|מחליף את החיים של 2 אנשים לבחירתך – כל אחד, גם מישהו מת
 BIG SMILE|5|פותחים מצלמה, מחייכים, ומורידים ליריב 50 חיים
 ELAD|4|בזימון הבא שלך אפשר לקחת 3 קלפים
@@ -538,10 +541,20 @@ HAWKS|3|4 התקפות של 5 על יריבים רנדומליים, ואתה מ�
 PANDA|3|מוריד 25, ויורד לך 5
 PIKACHU|3|מוריד 25, ומטילים מטבע – עץ: היריב גם מדלג על התור הבא
 BLUE BOX|3|אתה והחבר שלך מקבלים 15
-BOKUTO|5|🦉 מטילים מטבע. עץ – מצב שיא: 3 התקפות של 25 (אפשר על יריבים שונים). פלי – מצב דיכאון: מדלג על התור הבא, אלא אם החבר שלך מעודד אותו ומקריב 10 חיים – ואז הוא חוזר לשיא ומוריד 50`;
+BOKUTO|5|🦉 מטילים מטבע. עץ – מצב שיא: 3 התקפות של 25 (אפשר על יריבים שונים). פלי – מצב דיכאון: מדלג על התור הבא, אלא אם החבר שלך מעודד אותו ומקריב 10 חיים – ואז הוא חוזר לשיא ומוריד 50
+ONARA GORO|4|יריב מאבד 6 חיים בכל תור, 5 תורות, והחבר שלך מקבל 10
+SHANKS|3|👒 אתה נותן לחבר שלך את כובע הקש – מעכשיו יש לו כובע קש מעל הדמות
+CROCODILE|4|מייבש את היריב – הוא לא יכול לירוק יותר
+USATO|3|מעכשיו, בכל תור שלך יש 10% לקבל 10 חיים
+WEMMBU|3|בוחרים: MACE ATTACK! – מוריד 20, או אורביטל – מוריד 15 לכל היריבים
+MR 2|3|🎭 מתחזה ליריב ל-3 תורות: כל פעם שפוגעים בך או ביריב שבחרת – 50% שזה פוגע בך ו-50% שבו
+CHEETU|3|⏳ ליריב שבחרת יש 8 שעות אמיתיות לנצח אותך. אם לא הצליח – הוא מת. בצד יש טיימר
+KUMA|3|~🪤 מלכודת – מניחים הפוך. כשפוגעים בחבר שלך אפשר לחשוף: הנזק שהוא ספג עובר אליך במקום אליו
+FOXY|3|היריב שבחרת תמיד ישחק אחרון
+JOZU|4|💎 אתה הופך ליהלום – מעכשיו כל התקפה עליך מורידה חצי`;
 const CARDS=RAW.trim().split('\n').map((l,i)=>{const [n,s,e]=l.split('|');return{id:i,n,s:+s,e:e.replace(/^~/,''),h:e[0]=='~'}});
-const NF=new Set(['SENSEI WUU', 'DR STONE', 'AI', 'ORIHIME', 'BEATRICE', 'SHELTER', 'REGULUS CORNEAS', 'AANG', 'MIKASA', 'HORIMIYA', 'CHTHOLLY', 'NISHINOYA', 'GOKU SSJ', '16', 'EMOJI', 'HITOSHI ATTACK', 'REM', 'RECOVERY GIRL', 'KATSUHIRA AGATA', 'AKANE', 'KARAOKE', 'ODD TAXI', 'ZIV', 'PING PONG THE ANIMATION', 'KIZNAIVER', 'COBWEB', 'TRICK ROOM', 'GRIFFITH', 'LEORIO']);CARDS.forEach(c=>c.f=NF.has(c.n));
-const USED=new Set(['MR MIME', 'FERN', 'CLOWNPIERCE', 'SENSEI WUU', 'TODO', 'ELAD', 'SUBARU', 'DIO', 'UI', 'EITAN', 'HINATA + KAGEYAMA', 'MARCH', 'POKEBALL', 'SQUID', 'CREAM PUFF', 'IDO', 'SHALEV', 'TAKOPI', 'TRICK ROOM', 'STEAK', 'DEATH NOTE', 'BAKUGO', 'AMIT', 'DRACULA BALL', 'THORFIN', 'SCISSOR', 'KOMI', 'ERWIN', 'MONOKUMA', 'SUNG JIN WOO', 'X', 'GOKU SSJ', 'KAIJU NO 8', 'KISE', 'NARUTO', 'SNORLAX', 'SHIELD', 'KARAOKE', 'MIRROR', 'PATRICK', 'GIGA DRILL BREAK', 'NEZUKO', 'LELOUCH', 'NISHINOYA', 'ZIV', 'YAMCHA', 'WORDLE', 'SAVE POINT', 'CURSE DOMAIN', 'SANTA', 'DEMON SLAYER MOVIE', 'DAVID', 'SHINPEI AJIRO', 'BOCCHI', 'SAITAMA', 'ZORO', 'MEOWTH', 'ALL MIGHT', 'GINI', 'LUFFY', 'PING', 'PING 2', 'SANJI', 'CHTHOLLY', 'PEKO', 'BEGON', 'ZAMASU', 'SIMON', 'ALON', 'GOKU SSJ3', 'CELL', 'GHOST BLADE', 'LUCKIY CYAN', 'RILL', 'IPPO', 'BLACKJACK', 'PING PONG THE ANIMATION', 'MOON', 'SPIRIT BOMB', 'CHOPPER', 'ROSE', 'SPEEDRUN', 'REGULUS CORNEAS', 'ENEL', 'WHITEBEARD', 'OBITO', 'EREN TITAN', 'INOSUKE', 'OBAMA', 'POISEN', 'ASH KETCHUM', 'GEN ASAGIRI', 'AKAZA', 'JJK FUSHIGURO', 'ORIHIME', 'REM', 'BLACKBEARD', 'OMER']);
+const NF=new Set(['SENSEI WUU', 'DR STONE', 'AI', 'ORIHIME', 'BEATRICE', 'SHELTER', 'REGULUS CORNEAS', 'AANG', 'MIKASA', 'HORIMIYA', 'CHTHOLLY', 'NISHINOYA', 'GOKU SSJ', '16', 'EMOJI', 'HITOSHI ATTACK', 'REM', 'RECOVERY GIRL', 'KATSUHIRA AGATA', 'AKANE', 'KARAOKE', 'ODD TAXI', 'ZIV', 'PING PONG THE ANIMATION', 'KIZNAIVER', 'COBWEB', 'TRICK ROOM', 'GRIFFITH', 'LEORIO', 'SHANKS', 'KUMA']);CARDS.forEach(c=>c.f=NF.has(c.n));
+const USED=new Set(['MR MIME', 'FERN', 'CLOWNPIERCE', 'SENSEI WUU', 'TODO', 'ELAD', 'SUBARU', 'DIO', 'UI', 'EITAN', 'HINATA + KAGEYAMA', 'MARCH', 'POKEBALL', 'SQUID', 'CREAM PUFF', 'IDO', 'SHALEV', 'TAKOPI', 'TRICK ROOM', 'STEAK', 'DEATH NOTE', 'BAKUGO', 'AMIT', 'DRACULA BALL', 'THORFIN', 'SCISSOR', 'KOMI', 'ERWIN', 'MONOKUMA', 'SUNG JIN WOO', 'X', 'GOKU SSJ', 'KAIJU NO 8', 'KISE', 'NARUTO', 'SNORLAX', 'SHIELD', 'KARAOKE', 'MIRROR', 'PATRICK', 'NEZUKO', 'LELOUCH', 'NISHINOYA', 'ZIV', 'YAMCHA', 'WORDLE', 'SAVE POINT', 'CURSE DOMAIN', 'SANTA', 'DEMON SLAYER MOVIE', 'DAVID', 'SHINPEI AJIRO', 'BOCCHI', 'SAITAMA', 'ZORO', 'MEOWTH', 'ALL MIGHT', 'GINI', 'LUFFY', 'PING', 'PING 2', 'SANJI', 'CHTHOLLY', 'PEKO', 'BEGON', 'ZAMASU', 'SIMON', 'ALON', 'GOKU SSJ3', 'CELL', 'GHOST BLADE', 'LUCKIY CYAN', 'RILL', 'IPPO', 'BLACKJACK', 'PING PONG THE ANIMATION', 'MOON', 'SPIRIT BOMB', 'CHOPPER', 'ROSE', 'SPEEDRUN', 'REGULUS CORNEAS', 'ENEL', 'WHITEBEARD', 'OBITO', 'EREN TITAN', 'INOSUKE', 'OBAMA', 'POISEN', 'ASH KETCHUM', 'GEN ASAGIRI', 'AKAZA', 'JJK FUSHIGURO', 'ORIHIME', 'REM', 'BLACKBEARD', 'OMER']);
 const C=id=>CARDS[id];let S,img=Object.assign({},IMG0);
 const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const sh=a=>{for(let i=a.length;i>1;){const j=Math.random()*i--|0;[a[i],a[j]]=[a[j],a[i]]}return a};
@@ -563,7 +576,7 @@ const btn=(a,l,x,y,d)=>`<button data-a="${a}" data-x="${x??''}" data-y="${y??''}
 const tile=(c,b,eff)=>`<div class="t s${c.s}">${c.s==5?'<span class="holo"></span>':''}<label class="cam">📷<input type="file" hidden accept="image/*" data-f="c${c.id}"></label><div class="im" data-a="zoom" data-x="${c.id}" data-y="${eff?1:0}">${art('c'+c.id,c.n)}</div><b>${E(c.n)}</b><i>${'★'.repeat(c.s)}</i>${eff?`<p>${E(c.e)}</p>`:''}<div class="bt">${b||''}</div></div>`;
 const fb=()=>[0,3,4,5].map(f=>btn('f',f?f+'★':'הכל',f,'',S.f==f)).join('');
 const pool=bf=>`<div>${fb()}</div><div class="g">${S.pool.filter(id=>!S.f||C(id).s==S.f).map(id=>tile(C(id),bf(id),!!(S.yanR&&S.yanR.id===id&&(!NET.on||myP()===S.yanR.p)))).join('')}</div>`;
-const av=i=>{const u=(S.pimg&&S.pimg[i])||img['p'+i];return `<div class="av">${u?`<img src="${u}">`:'🙂'}</div>`};
+const av=i=>{const u=(S.pimg&&S.pimg[i])||img['p'+i];return `<div class="av">${S.hat&&S.hat[i]?'<span class="hat">👒</span>':''}${u?`<img src="${u}">`:'🙂'}</div>`};
 const tp=h=>{const T=S.M[h];return `<div class="tp">${S.sh?`<input data-n="t${h}" value="${E(S.T[h].n)}">`:`<b>${E(S.P[h].n)}</b>`}<div>קלפים: ${S.H[h].length}</div><div class="mini">${S.H[h].map(id=>`<span class="s${C(id).s}">${E(C(id).n)} ${T.done?'':btn('ret','✕',id,h)}</span>`).join('')}</div>`+
  (!T.done?btn('done','סיימנו לבחור – צור קוד',h):`<textarea id="l${h}" readonly rows="5" style="width:95%">${E(link(h))}</textarea>${btn('copy','📋 העתק הודעה לשליחה',h)}${btn('undo','חזרה לבחירה',h)}${T.rd?'<b>✔ מוכנים</b>':btn('rdy','✔ מוכנים',h)}`)+`</div>`};
 const tpOn=h=>{const T=S.M[h];return `<div class="tp"><b>${E(hn(h))}</b><div>קלפים: ${S.H[h].length}</div><div class="mini">${S.H[h].map(id=>`<span class="s${C(id).s}">${E(C(id).n)} ${T.rd?'':btn('ret','✕',id,h)}</span>`).join('')}</div>${T.rd?'<b>✔ מוכנים</b> '+btn('undo','↩ חזרה לבחירה',h):btn('rdy','✔ סיימנו – מוכנים',h)}</div>`};
@@ -711,7 +724,7 @@ const giveStar=async(me,st,n=1)=>{const ids=await drawP(`🎴 משוך ${n>1?n+'
 const addFx=(n,k,u,w,x={})=>S.fx.push(Object.assign({n,k,left:k,u,w},x));
 
 // ===== defenses =====
-const STI={dodge:'💨',immune:'🛡️',half:'🧱',doll:'🪆',heart:'💗',redir:'🤺',x2:'⚔️',weak:'😞',troll:'🧌',pierce:'🎯',x2p:'💉',ult:'💌',noheal:'🎮',alon:'👓',ziv:'✨',cell:'🧬',split:'🔗',toko:'🐦‍⬛',gojo:'♾️',pochita:'🐶',drd:'🍀',counter:'🥋',bankai:'⚔️',guts:'🗡️',spitonly:'🤕',sand:'🏜️',erase:'🚫',thorns:'⚔️',charm:'💘',hidden:'👻',unluck:'🍀',dimp:'🌑',rev:'♻️',meruem:'🐜'};
+const STI={dodge:'💨',immune:'🛡️',half:'🧱',doll:'🪆',heart:'💗',redir:'🤺',x2:'⚔️',weak:'😞',troll:'🧌',pierce:'🎯',x2p:'💉',ult:'💌',noheal:'🎮',alon:'👓',ziv:'✨',cell:'🧬',split:'🔗',toko:'🐦‍⬛',gojo:'♾️',pochita:'🐶',drd:'🍀',counter:'🥋',bankai:'⚔️',diamond:'💎',usato:'🩹',mr2:'🎭',guts:'🗡️',spitonly:'🤕',sand:'🏜️',erase:'🚫',thorns:'⚔️',charm:'💘',hidden:'👻',unluck:'🍀',dimp:'🌑',rev:'♻️',meruem:'🐜'};
 const addSt=(p,k,o={})=>{const st=Object.assign({p,k,id:S.ev=(S.ev||0)+1},o);if(st.left!=null&&st.w===S.ti)st.left++;(S.st=S.st||[]).push(st);return st};
 const stOf=(p,k)=>(S.st||[]).filter(x=>x.p==p&&(!k||x.k==k));
 const dropSt=st=>{S.st=(S.st||[]).filter(x=>x!==st)};
@@ -719,7 +732,7 @@ const badge=(p,txt)=>{(S.bg[p]=S.bg[p]||[]).push({txt,id:S.ev=(S.ev||0)+1})};
 const stTick=p=>(S.st||[]).slice().forEach(st=>{if(st.left!=null&&st.w===p&&--st.left<=0){dropSt(st);lg(`⌛ ${st.src||''} נגמר (${pn(st.p)})`);if(st.k=='migi'&&S.sec)S.sec=S.sec.filter(x=>x!==st.id);if(st.k=='ult'&&S.P[st.p].hp>0)setHp(st.p,Math.ceil(S.P[st.p].hp/2),'💌 VIOLET – האולטימייט נגמר, החיים נחצים')}});
 const TRAPS={SHIELD:'block',NISHINOYA:'pass',IPPO:'dodge',MIRROR:'mirror',AIRJITZU:'air'};
 const useSt=(st,txt)=>{badge(st.p,txt);if(st.n!=null&&--st.n<=0)dropSt(st)};
-const attack=async(att,t,v,src,o={})=>{if(!alive(t))return 0;if(S.dim&&S.dim.n>0&&inDim(att)!==inDim(t)){badge(t,'🌀 מימד אחר');lg(`🌀 ${pn(t)} במימד אחר – ההתקפה לא הגיעה`);return 0}v=Math.max(0,Math.round(v));{const di=stOf(att,'dimp')[0];if(di&&tm(t)!==tm(att)){const ch=0.03*((S.rn||1)-di.r0+1),m=matesOf(att).filter(alive)[0];if(m!=null&&Math.random()<ch){lg(`🌑 Dark Impulse (${Math.round(ch*100)}%): ${pn(att)} איבד שליטה ופגע ב${pn(m)}!`);t=m}}}if(stOf(att,'charm').some(x=>x.o===t)){badge(att,'💘 מאוהב');lg(`💘 ${pn(att)} מאוהב ב${pn(t)} ולא מסוגל לתקוף`);return 0}const pr=o.pierce||stOf(att,'pierce').length>0;
+const attack=async(att,t,v,src,o={})=>{if(!alive(t))return 0;if(S.dim&&S.dim.n>0&&inDim(att)!==inDim(t)){badge(t,'🌀 מימד אחר');lg(`🌀 ${pn(t)} במימד אחר – ההתקפה לא הגיעה`);return 0}v=Math.max(0,Math.round(v));{const di=stOf(att,'dimp')[0];if(di&&tm(t)!==tm(att)){const ch=0.03*((S.rn||1)-di.r0+1),m=matesOf(att).filter(alive)[0];if(m!=null&&Math.random()<ch){lg(`🌑 Dark Impulse (${Math.round(ch*100)}%): ${pn(att)} איבד שליטה ופגע ב${pn(m)}!`);t=m}}}{const m2=(S.st||[]).find(x=>x.k=='mr2'&&(x.p===t||x.o===t));if(m2){const nt=Math.random()<.5?m2.p:m2.o;if(nt!==t&&alive(nt)){lg(`🎭 MR 2: ההתקפה פגעה ב${pn(nt)} במקום ב${pn(t)}!`);t=nt}}}if(stOf(att,'charm').some(x=>x.o===t)){badge(att,'💘 מאוהב');lg(`💘 ${pn(att)} מאוהב ב${pn(t)} ולא מסוגל לתקוף`);return 0}const pr=o.pierce||stOf(att,'pierce').length>0;
  if(stOf(att,'pierce').length&&!o.pierce)useSt(stOf(att,'pierce')[0],'🎯 עובר הגנות');
  for(const st of stOf(att,'x2')){v*=2;useSt(st,'⚔️ ×2 '+(st.src||''));break}
  if(stOf(att,'x2p').length){v*=2;badge(att,'💉 ×2')}
@@ -733,6 +746,7 @@ const attack=async(att,t,v,src,o={})=>{if(!alive(t))return 0;if(S.dim&&S.dim.n>0
  if(S.shadow&&S.shadow.cnt===S.cnt&&S.shadow.p===att){v=Math.floor(v/2);badge(att,'🐦‍⬛ ½')}
  for(const st of stOf(att,'cell')){const k=(S.deaths||0)-st.base;if(k>0){v+=10*k;badge(att,'🧬 +'+10*k)}}
  if(stOf(t,'ziv').length&&!matesOf(t).some(alive)){v=Math.floor(v/2);badge(t,'✨ ZIV ½')}
+ if(stOf(t,'diamond').length&&v>0){v=Math.floor(v/2);badge(t,'💎 ½')}
  if(stOf(t,'sand').length&&v>0){v=Math.max(0,v-10);badge(t,'🏜️ −10')}
  if(att!==t&&tm(att)!==tm(t)){if(stOf(t,'thorns').length)dmg(att,10,'⚔️ IGRIS',t);const u=stOf(t,'unluck')[0];if(u){dropSt(u);dmg(att,20,'🍀 FUUKO – Unluck',t)}const mg=stOf(t,'migi').find(x=>x.o===att);if(mg){dropSt(mg);if(S.sec)S.sec=S.sec.filter(x=>x!==mg.id);lg('🖐️ MIGI תפס את '+pn(att)+'!');dmg(att,20,'🖐️ MIGI',t)}}
  const rd=stOf(t,'redir').find(st=>alive(st.to));if(rd&&!pr){badge(rd.to,'🤺 מגן על '+pn(t));lg(`🤺 ${rd.src}: ${pn(rd.to)} ספג את ההתקפה במקום ${pn(t)}`);t=rd.to;v=Math.ceil(v/2)}
@@ -771,7 +785,7 @@ const FX={};
 const dm=(k,v)=>async c=>c.d(await c.pick(k),v);
 FX.MIDORIMA=async c=>c.dp(await c.pick('opp'),15);
 Object.entries({CLOWNPIERCE:30,MONOKUMA:35,PEKO:35,ASUNA:25,BROLY:45,YAMCHA:5,'EREN TITAN':20,AKAZA:30,'LOID GREEAN':20,MARIO:20}).forEach(([n,v])=>FX[n]=dm('opp',v));
-FX['GIGA DRILL BREAK']=dm('any',65);FX.BAKUGO=dm('any',30);
+FX['GIGA DRILL BREAK']=async c=>{c.d(await c.pick('any'),65);const mine=S.H[hd(c.me)].filter(i=>i!=c.id&&C(i).s<5);if(!mine.length)return;const n=await c.num('🌀 כמה קלפים לנסות לשדרג? (3★ – 40%, 4★ – 20%)',0,mine.length,mine.length);if(!n)return;const ch=await chooseC(`🌀 בחר ${n} קלפים לשדרג`,mine,n);let up=0;for(const i of ch){const st=C(i).s;if(Math.random()<(st==3?.4:.2)){const l=S.pool.filter(x=>C(x).s==st+1);if(!l.length)continue;const nw=rnd(l);S.pool=S.pool.filter(x=>x!==nw);rm(hd(c.me),i);S.pool.push(i);S.H[hd(c.me)].push(nw);up++;lg(`🌀 ${C(i).n} השתדרג ל-${st+1}★!`)}}lg(`🌀 GIGA DRILL BREAK: ${up} מתוך ${ch.length} קלפים השתדרגו`)};FX.BAKUGO=dm('any',30);
 FX.IDO=async c=>c.others().forEach(t=>c.d(t,40));FX.INOSUKE=async c=>c.others().forEach(t=>c.d(t,15));
 FX.SAKURA=async c=>c.opps().forEach(t=>c.d(t,10));FX['MR MIME']=async c=>c.opps().forEach(t=>c.d(t,15));
 FX['TEAM ROCKET']=async c=>{c.opps().forEach(t=>c.d(t,25));const o=rnd(ALL().filter(x=>tm(x)!==tm(c.me)));S.used=S.used.filter(i=>i!=c.id);S.H[hd(o)].push(c.id);lg('🚀 TEAM ROCKET עבר ל'+hn(hd(o)))};
@@ -1012,7 +1026,7 @@ const lockMsg=(a,x)=>{const p=S.ti;if(S.km&&p===S.km.p&&LKA.includes(a))return '
  if(stOf(p,'erase').length&&(a=='play'||a=='hand'))return '🚫 AIZAWA: אתה לא יכול להשתמש בקלפים בתור הזה';
  if(S.shadow&&S.shadow.cnt===S.cnt&&p===S.shadow.p&&['sum','take','rnd','pack','wheel'].includes(a))return '🐦‍⬛ בתור של Dark Shadow אי אפשר למשוך קלפים';
  if(a=='take'&&!tkOk(p)&&!amAdm())return '🃏 אפשר לקחת רק '+(S.elad&&S.elad[p]?'3 קלפים':'קלף אחד')+' בזימון';return null};
-const xTurn=()=>{const p=S.ti;S.tA=S.tA||{};S.tP=S.tP||{};S.tP[p]=S.tA[p];S.tA[p]=S.cnt;if(S.nagi&&S.nagi.p===p&&S.nagi.c!==S.cnt){const n=S.nagi;S.nagi=null;if(alive(n.t)){lg('😴 NAGI התעורר!');attack(p,n.t,50,'⚽ NAGI')}}if(S.skb&&S.skb.by===p&&S.skb.c!==S.cnt)S.skb.q=S.cnt;{const gj=stOf(p,'gojo')[0];if(gj&&gj.c0!==S.cnt){dropSt(gj);if(gj.acc.length){const by={};gj.acc.forEach(a=>by[a.by]=(by[a.by]||0)+a.v);Object.entries(by).forEach(([b,v])=>{if(alive(+b))dmg(+b,v*2,'♾️ GOJO מחזיר פי 2',p)})}else lg('♾️ GOJO: אף אחד לא תקף את '+pn(p))}}S.yanR=null;if(S.elad&&S.elad[p]==='u')delete S.elad[p];
+const xTurn=()=>{const p=S.ti;if(stOf(p,'usato').length&&alive(p)&&Math.random()<.1)heal(p,10,'🩹 USATO');S.tA=S.tA||{};S.tP=S.tP||{};S.tP[p]=S.tA[p];S.tA[p]=S.cnt;if(S.nagi&&S.nagi.p===p&&S.nagi.c!==S.cnt){const n=S.nagi;S.nagi=null;if(alive(n.t)){lg('😴 NAGI התעורר!');attack(p,n.t,50,'⚽ NAGI')}}if(S.skb&&S.skb.by===p&&S.skb.c!==S.cnt)S.skb.q=S.cnt;{const gj=stOf(p,'gojo')[0];if(gj&&gj.c0!==S.cnt){dropSt(gj);if(gj.acc.length){const by={};gj.acc.forEach(a=>by[a.by]=(by[a.by]||0)+a.v);Object.entries(by).forEach(([b,v])=>{if(alive(+b))dmg(+b,v*2,'♾️ GOJO מחזיר פי 2',p)})}else lg('♾️ GOJO: אף אחד לא תקף את '+pn(p))}}S.yanR=null;if(S.elad&&S.elad[p]==='u')delete S.elad[p];
  if(S.dbl&&S.dbl[p]>0){S.dbl[p]--;S.extra++;lg('➕ '+pn(p)+' עושה 2 מהלכים בתור הזה')}
  if(stOf(p,'troll').length)S.sk[p]=Math.max(S.sk[p]||0,1);
  if(S.kfir&&(S.rn||1)%2==0){const r=1+(Math.random()*6|0);if((r==2||r==4)&&S.pool.length){const i=S.pool.splice(Math.random()*S.pool.length|0,1)[0];recv(p,[i]);lg(`🎲 KFIR: ${pn(p)} הטיל ${r} – קיבל קלף חינם`)}else lg(`🎲 KFIR: ${pn(p)} הטיל ${r}`);if(Math.random()<.2){const q=1+(Math.random()*6|0);lg('🏀 קוביית שלשה! '+pn(p)+' הטיל '+q);if(q==4)giveR(p,3);else if(q>=5){const o=oppsOf(p).filter(alive);if(o.length)dmg(rnd(o),q==5?10:20,'🏀 שלשה של '+pn(p),p)}}}
@@ -1029,6 +1043,7 @@ const trap2=async id=>{const n=C(id).n,ow=S.own[id];if(ow==null)return 0;const o
  if(n=='KING CRIMSON'||n=='HISOKA'){const h0=S.hits.find(h=>tm(h.by)!==tm(ow)),x=oppPlay();if(n=='HISOKA'&&x){back(x);S.H[hd(ow)].push(x.id);lg(`🪤 HISOKA: ${C(x.id).n} נדבק ל${pn(ow)} ועבר אליו`)}if(h0)lg(`🪤 ${n}: בוטלו ${undoFrom(h0)} פגיעות של ${pn(h0.by)}`);else if(!x)lg('🪤 '+n+': אין מה לבטל');return fin()}
  if(n=='SUBARU'){const h=S.hits.find(h=>h.t===ow&&h.amt>0);if(!h){lg('🪤 SUBARU: לא פגעו ב'+pn(ow));return fin()}gain(ow,h.amt,'🪤 SUBARU – חוזר לנקודת השמירה');S.hits=S.hits.filter(x=>x!==h);return fin()}
  if(n=='SHELTER'){const h=S.hits.find(h=>matesOf(ow).includes(h.t)&&S.P[h.t].hp<=0&&h.amt>0);if(!h){lg('🪤 SHELTER: החבר של '+pn(ow)+' לא נהרג');return fin()}gain(ow,Math.floor(h.amt/2),'🪤 SHELTER');return fin()}
+ if(n=='KUMA'){const h=S.hits.find(h=>matesOf(ow).includes(h.t)&&h.amt>0);if(!h){lg('🪤 KUMA: אף אחד לא פגע בחבר של '+pn(ow));return fin()}S.hits=S.hits.filter(x=>x!==h);gain(h.t,h.amt,'🐻 KUMA');dmg(ow,h.amt,'🐻 KUMA – לקח את הנזק',h.by);return fin()}
  if(n=='GAROU'){const h=S.hits.find(h=>h.t===ow&&h.amt>0&&h.by!=null&&h.by!==ow);if(!h){lg('🪤 GAROU: אף אחד לא פגע ב'+pn(ow));return fin()}lg(`🪤 GAROU: ההתקפה של ${pn(h.by)} חוזרת פי 2!`);dmg(h.by,h.amt*2,'🪤 GAROU',ow);return fin()}
  if(n=='MAKIMA'){S.mk={ow};lg('🪤 MAKIMA: הקלף הבא שהיריב יקבל יעבור ל'+pn(ow));return fin()}
  return 0};
@@ -1263,6 +1278,17 @@ FX['BLUE BOX']=async c=>{[c.me,...c.mates()].filter(alive).forEach(t=>c.h(t,15))
 FX.BOKUTO=async c=>{if(await c.coin('🦉 BOKUTO – עץ: מצב שיא, פלי: מצב דיכאון')){lg('🦉 HEY HEY HEY! BOKUTO במצב שיא');for(let k=1;k<=3;k++){if(!c.opps().length)break;c.d(await c.pick('opp',`🏐 ספייק ${k} מתוך 3 (25)`),25)}return}
  lg('😞 BOKUTO נכנס למצב דיכאון…');const m=c.mates().filter(t=>alive(t)&&S.P[t].hp>10)[0];
  if(m!=null&&await ask(`📣 ${pn(m)} – BOKUTO בדיכאון! לעודד אותו ולהקריב 10 חיים?`,[{l:'📣 לעודד (−10 לי)',v:1,c:'gn'},{l:'לא',v:0}],{who:NET.on?'p'+m:'J'})){dmg(m,10,'📣 עידוד ל-BOKUTO');lg('🦉 BOKUTO חזר לשיא!');c.d(await c.pick('opp','🏐 על מי 50?'),50)}else c.skip(c.me)};
+const fmtT=ms=>{ms=Math.max(0,ms);const h=Math.floor(ms/3600000),m=Math.floor(ms/60000)%60,sx=Math.floor(ms/1000)%60;return `${h}:${String(m).padStart(2,'0')}:${String(sx).padStart(2,'0')}`};
+setInterval(()=>{const b=document.querySelector('#chtm b[data-end]');if(b)b.textContent=fmtT(+b.dataset.end-Date.now());if(typeof S!='undefined'&&S&&S.ph=='game'&&S.cheetu&&(!NET.on||NET.host)){const ct=S.cheetu;if(!alive(ct.by)){S.cheetu=null;lg('⏳ CHEETU: '+pn(ct.t)+' ניצח בזמן!');render()}else if(Date.now()>=ct.end){S.cheetu=null;if(alive(ct.t)){lg('⏳ CHEETU: נגמרו 8 השעות – '+pn(ct.t)+' מת!');setHp(ct.t,0,'⏳ CHEETU')}render()}}},1000);
+FX['ONARA GORO']=async c=>{const t=await c.pick('opp','💨 על מי?');addFx('💨 ONARA GORO',5,'p',c.me,{dot:{a:6,tg:[t]}});const m=c.mates().filter(alive);if(m.length)c.h(m.length==1?m[0]:await c.pick('mate','💨 לאיזה חבר 10?'),10);lg('💨 '+pn(t)+' מאבד 6 בכל תור, 5 תורות')};
+FX.SHANKS=async c=>{const m=c.mates().filter(alive);const t=m.length?(m.length==1?m[0]:await c.pick('mate','👒 למי לתת את כובע הקש?')):c.me;(S.hat=S.hat||{})[t]=1;lg('👒 '+pn(t)+' קיבל את כובע הקש של SHANKS!')};
+FX.CROCODILE=async c=>{const t=await c.pick('opp','🏜️ את מי לייבש?');SP().ban[t]=1;lg('🏜️ CROCODILE ייבש את '+pn(t)+' – הוא לא יכול לירוק יותר')};
+FX.USATO=async c=>{if(!stOf(c.me,'usato').length)addSt(c.me,'usato',{src:'USATO'});lg('🩹 USATO: בכל תור של '+pn(c.me)+' יש 10% לקבל 10 חיים')};
+FX.WEMMBU=async c=>{if(await c.ch('⚒️ WEMMBU – מה עושים?',['⚒️ MACE ATTACK! – 20 ליריב','🛰️ אורביטל – 15 לכל היריבים']))c.opps().forEach(t=>c.d(t,15));else c.d(await c.pick('opp','⚒️ על מי ה-MACE?'),20)};
+FX['MR 2']=async c=>{const t=await c.pick('opp','🎭 למי להתחזות?');addSt(c.me,'mr2',{o:t,left:3,w:c.me,src:'MR 2'});lg('🎭 '+pn(c.me)+' מתחזה ל'+pn(t)+' – 3 תורות')};
+FX.CHEETU=async c=>{const t=await c.pick('opp','⏳ למי לתת 8 שעות?');S.cheetu={t,by:c.me,end:Date.now()+8*3600000};lg(`⏳ CHEETU: ל${pn(t)} יש 8 שעות לנצח את ${pn(c.me)} – אחרת הוא מת!`)};
+FX.FOXY=async c=>{const t=await c.pick('opp','🦊 מי ישחק תמיד אחרון?');S.lastP=t;lg('🦊 '+pn(t)+' ישחק תמיד אחרון')};
+FX.JOZU=async c=>{if(!stOf(c.me,'diamond').length)addSt(c.me,'diamond',{src:'JOZU'});lg('💎 '+pn(c.me)+' הפך ליהלום – כל התקפה עליו מורידה חצי')};
 const trapUndo=async(id,who)=>{CURWHO=who||'J';if(C(id).n=='POKEMON EVOLUTION'){const ow=S.own[id],v=((S.tv&&S.tv[id])||{v:5}).v;S.prCard=id;try{const t=await pick(ow,'opp',`⚡ POKEMON EVOLUTION התפתח ל-${v}! על מי?`);await attack(ow,t,v,'⚡ POKEMON EVOLUTION')}catch(e){}if(S.tv)delete S.tv[id];S.prCard=null;S.pr=null;PRF=null;render();return}if(C(id).n=='SAVE POINT'){if(!S.save)return;S.prCard=id;let v;try{v=await ask('💾 SAVE POINT – להחזיר את החיים של כולם למה שנשמר?',[{l:'✔ כן, להחזיר',v:1,c:'gn'},{l:'לא',v:0}])}catch(e){v=0}S.prCard=null;if(v)S.save.hp.forEach((h,i)=>setHp(i,h,'💾 SAVE POINT'));S.save=null;render();return}if(await trap2(id))return;const n=C(id).n,hs=S.hits.filter(h=>h.amt>0).slice(0,3);if(!hs.length)return;const bt=[];
  hs.forEach((h,k)=>{bt.push({l:`↩ בטל: ${E(pn(h.t))} +${h.amt} <small>(${E(h.src)})</small>`,v:'u'+k,c:'gn'});if(n=='MIRROR'||n=='IPPO')bt.push({l:`🔁 ${n=='IPPO'?'חצי':'הכל'} חזרה ל${E(pn(h.by))} (−${n=='IPPO'?Math.floor(h.amt/2):h.amt})`,v:'r'+k})});
  bt.push({l:'לא עכשיו',v:'x'});let v;S.prCard=id;try{v=await ask('🪤 '+n+' – לבטל התקפה אחרונה?',bt)}catch(e){S.prCard=null;return}S.prCard=null;if(v=='x')return render();
@@ -1404,6 +1430,7 @@ function render(){if(S){if(S.mog&&S.mogHeard!==S.mogId){S.mogHeard=S.mogId;boom(
  const _pt=document.getElementById('prt'),_pk=_pt&&_pt.dataset.k,_pv=_pt&&_pt.value,_pf=!!_pt&&document.activeElement===_pt;
  document.getElementById('app').innerHTML=({home:homeH,wait:waitH,setup:setupH,pack:packH,pick:pickH,game:gameH,end:endH,view:viewH})[S.ph]()+modal()+supH()+mogH()+winH()+trRH()+prH()+zoomH()+povH()+njH()+(aniOn()&&[S.newb,S.flipId].some(x=>x!=null&&C(x).s==5)&&S.ph=='game'?'<div class="fl5"></div>':'');
  {const e=document.getElementById('prt');if(e&&_pt&&e.dataset.k===_pk){e.value=_pv;if(_pf){e.focus();try{e.setSelectionRange(_pv.length,_pv.length)}catch(x){}}}}
+ {const ct=S&&S.ph=='game'&&S.cheetu;let w=document.getElementById('chtm');if(ct){if(!w){w=document.createElement('div');w.id='chtm';w.className='chtm';document.body.appendChild(w)}w.innerHTML=`⏳ CHEETU: ${E(pn(ct.t))} צריך לנצח את ${E(pn(ct.by))}<b data-end="${ct.end}">${fmtT(ct.end-Date.now())}</b>`}else if(w)w.remove()}
  VIEW=null;bcast();if(S&&S.ph=='game'){for(const [k,m,c] of [['njMiss','🥷 לא שמת לב לנינג׳ה! −5','dn big'],['njOk','🥷 תפסת את הנינג׳ה! 👏','up big']]){const v=S[k];if(v&&S[k+'S']!==v.id){S[k+'S']=v.id;if(!NET.on||myP()===v.t)toast(m,c)}}const N=S.lgN||0;if(S.lgSeen===undefined)S.lgSeen=N;else if(N>S.lgSeen){S.log.slice(0,Math.min(4,N-S.lgSeen)).map(lgVis).filter(x=>x!=null).reverse().filter(x=>!x.startsWith('🔁')).forEach(x=>toast(x,/−\d/.test(x)?'dn':/\+\d/.test(x)?'up':''));S.lgSeen=N}const k=S.cnt+'|'+S.ti+'|'+(S.rn||0);if(S.turnSeen===undefined)S.turnSeen=k;else if(k!==S.turnSeen){S.turnSeen=k;const mine=NET.on&&myP()==S.ti;turnBanner(mine?'🎯 התור שלך!':'🔁 התור של '+pn(S.ti),mine)}if(S.evt&&EVSEEN!==S.evt.id){if(EVSEEN!==null||S.evt.rn===S.rn){const d=document.createElement('div');d.className='evbn';d.innerHTML=`<small>🎲 אירוע!</small><b>${E(S.evt.n)}</b><span>${E(S.evt.d)}</span>`;document.body.appendChild(d);setTimeout(()=>d.remove(),4200)}EVSEEN=S.evt.id}}
  document.body.classList.toggle('ingame',!!S&&S.ph=='game');document.body.dataset.th=TH;if(TH=='mogi'&&!document.body.style.getPropertyValue('--mog'))document.body.style.setProperty('--mog',`url(${MOGI})`);if(S){S.drwA=0;if(S.zm)S.zm.a=0;S.aniDone=aniK();Object.values(S.fl||{}).forEach(a=>a.forEach(f=>S.flSeen.add(f.id)));Object.values(S.bg||{}).forEach(a=>a.forEach(f=>S.flSeen.add(f.id)));S.saA=0;S.rsN=0;if(!NET.on||NET.host){S.newb=null;S.flipId=null;if(!S.pr){S.fl={};S.bg={}}}}}
 const fxDone=f=>{S.tn=(S.tn?S.tn+' | ':'')+'⏰ האפקט "'+f.n+'" נגמר'};
